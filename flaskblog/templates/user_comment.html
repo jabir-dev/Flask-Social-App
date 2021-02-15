@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block content %}
+
+    {% for comment in comments.items %}
+
+    <div class="content-section">
+      <div class="media">
+          <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + comment.author.image_file) }}">
+          <div class="media-body">
+              <h1>User About</h1>
+              <hr>
+          <h4 class="text-secondary">UserName:  {{  comment.author.username }}</h4>
+          <h4 class="text-secondary">About: {{ comment.author.about_me }}</h5>
+        </div>
+      </div>
+  </div>
+
+        <article class="media content-section">
+          <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + comment.author.image_file) }}">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="{{ url_for('users.user_comments', username=comment.author.username) }}">{{ post.author.username }}</a>
+              <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+            </div>
+            <h2><a class="article-title" href="{{ url_for('comments.comment', id=comment.id) }}">{{ comment.body}}</a></h2>
+            <p class="article-content">{{ comment.body }}</p>
+          </div>
+        </article>
+    {% endfor %}
+    {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+      {% if page_num %}
+        {% if posts.page == page_num %}
+          <a class="btn btn-info mb-4" href="{{ url_for('users.user_posts', username=user.username, page=page_num) }}">{{ page_num }}</a>
+        {% else %}
+          <a class="btn btn-outline-info mb-4" href="{{ url_for('users.user_posts', username=user.username, page=page_num) }}">{{ page_num }}</a>
+        {% endif %}
+      {% else %}
+        ...
+      {% endif %}
+    {% endfor %}
+{% endblock content %}
